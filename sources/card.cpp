@@ -1,12 +1,11 @@
 //
 // Created by Nikita Breslavsky on 23/03/2023.
 //
-#include <iostream>
-#include <string>
+
 #include "card.hpp"
 
 using namespace std;
-
+using namespace ariel;
 
 string Card::toString() {
     if (this->rank == 11) {

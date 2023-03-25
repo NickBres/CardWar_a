@@ -2,42 +2,65 @@
 // Created by Nikita Breslavsky on 21/03/2023.
 //
 
-#ifndef CARDWAR_A_PLAYER_H
-#define CARDWAR_A_PLAYER_H
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <stack>
 #include "card.hpp"
 
 using namespace std;
+namespace ariel
+{
+    class Player
+    {
+    public:
+        string name;
+        stack<Card> cards;
+        stack<Card> cardsTakenStack;
+        int turnsPlayed;
+        int turnsWon;
+        int turnsDraw;
+        int cardsTakenCount;
 
-class Player {
-public:
-    string name;
-    stack <Card> cards;
-    stack <Card> cardsTakenStack;
-    int turnsPlayed;
-    int turnsWon;
-    int turnsDraw;
-    int cardsTakenCount;
+        Player(){
+            this->setDefault();
+        };
 
-    Player();
-    Player(string name);
+        Player(string name)
+        {
+            this->name = name;
+            this->turnsPlayed = 0;
+            this->turnsWon = 0;
+            this->turnsDraw = 0;
+            this->cardsTakenCount = 0;
+            this->cards = stack<Card>();
+            this->cardsTakenStack = stack<Card>();
+        };
 
-    Card playCard();
+        void setDefault()
+        {
+            this->name = "";
+            this->turnsPlayed = 0;
+            this->turnsWon = 0;
+            this->turnsDraw = 0;
+            this->cardsTakenCount = 0;
+            this->cards = stack<Card>();
+            this->cardsTakenStack = stack<Card>();
+        };
 
-    void addCard(Card card);
+        Card playCard();
 
-    void takeCard(Card card);
+        void addCard(Card card);
 
-    int stackSize();
+        void takeCard(Card card);
 
-    int cardsTaken();
+        int stacksize();
 
-    string getStats();
+        int cardesTaken();
 
-    int cardsLeft();
+        string getStats();
 
+        int cardsLeft();
+    };
 };
-
-#endif //CARDWAR_A_PLAYER_H
