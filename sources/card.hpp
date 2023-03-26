@@ -48,9 +48,5 @@ namespace ariel
         {
             this->suit = suit;
         };
-        ~Card()
-        {
-            delete this;
-        };
     };
 };
