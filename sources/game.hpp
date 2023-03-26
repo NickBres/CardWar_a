@@ -5,6 +5,8 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
+#include <random>
 
 #include "card.hpp"
 #include "player.hpp"
@@ -13,28 +15,26 @@ namespace ariel
 {
     class Game
     {
-        Card *deck;
-        Player *players;
+        Card deck[52];
+        Player p1,p2;
         string lastTurn;
         string mainLog;
         int winner;
 
     public:
-        Game(Player p1, Player p2) {
-        deck = new Card[52];
-        players = new Player[2];
+        Game(Player p1, Player p2){
         lastTurn = "";
         mainLog = "";
         winner = -1;
-        players[0] = p1;
-        players[1] = p2;
+        this->p1 = p1;
+        this->p2 = p2;
         this->fillCards();
-        this->shuffle();
+        random_shuffle(&this->deck[0], &this->deck[52]);
         this->splitCards();
     };
 
-        void fillCards();  // fill the array of cards
-        void shuffle();    // shuffle all cards in array
+        void fillCards();  // fill the array of cards#include <iostream>
+        void swapCards(int i, int j); // swap two cards in array
         void splitCards(); // split cards between two players
         void playTurn();   // make one turn
         void printLastTurn();  

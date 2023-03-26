@@ -74,7 +74,7 @@ TEST_CASE("Player cards taken manipulations"){
     CHECK(p.cardsLeft() == 1);
     card1 = p.playCard();  // play card (get card from cards taken because main deck is empty)
     CHECK(p.cardsTakenStack.size() == 0); // check if card was removed
-    CHECK(p.cardesTaken() == 0);
+    CHECK(p.cardesTaken() == 1);
     CHECK(p.cardsLeft() == 0);
     CHECK(card1.getRank() == 2); // check if card is the same
     CHECK(card1.getSuit() == "Hearts");
