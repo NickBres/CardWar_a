@@ -25,7 +25,7 @@ int main() {
 
    while (true){
         int i = 0;
-        cout << "Enter command (1 - turn, 2 - print last turn, 3 - print log, 4 - print stats, 5 - print winner, 6 - finish the game) : " << endl;
+        cout << "Choose command \n1 - turn \n2 - print last turn \n3 - print log \n4 - print stats \n5 - print winner \n6 - finish the game \nother to exit: " << endl;
         cin >> i;
         cout << "----------------------------------------------------------------------------------------" << endl;
         switch (i)
@@ -50,9 +50,6 @@ int main() {
             game.playAll();
             break;
         default:
-            game.~Game();
-            p1.~Player();
-            p2.~Player();
             return 0;
         }
         cout << "----------------------------------------------------------------------------------------" << endl;
