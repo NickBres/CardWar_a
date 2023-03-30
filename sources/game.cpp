@@ -56,12 +56,15 @@ void Game::splitCards()
 
 void Game::playTurn()
 {
+    if (this->checkWin()) // do not play if there is a winner
+    {
+        return;
+    }
     string log = "";                                     // log of the turn
     vector<unsigned int> cards = vector<unsigned int>(); // to store the cards that were drawn
 
     unsigned int p1Card = this->p1.playCard();
     unsigned int p2Card = this->p2.playCard();
-    if (this->checkWin()) return; // check if there is a winner already
     cards.push_back(p1Card);
     cards.push_back(p2Card);
     log += this->p1.getName() + " plays " + this->deck[p1Card].toString() + " | " + this->p2.getName() + " plays " + this->deck[p2Card].toString();
@@ -74,14 +77,15 @@ void Game::playTurn()
         log += " > Draw \n";
 
         p1Card = this->p1.playCard();
-
         p2Card = this->p2.playCard();
+
         if (this->checkWin())
         { // check if there is a winner already
             this->lastTurn = log;
             this->mainLog += log;
             return;
         }
+
         log += this->p1.getName() + " plays " + this->deck[p1Card].toString() + " | " + this->p2.getName() + " plays " + this->deck[p2Card].toString();
         cards.push_back(p1Card);
         cards.push_back(p2Card);
@@ -107,12 +111,9 @@ void Game::playTurn()
             cards.pop_back();
         }
     }
-    else
-    {
-        log += " >>> Draw! \n";
-    }
     this->lastTurn = log;
     this->mainLog += log;
+    this->checkWin();
 };
 
 void Game::printLastTurn()
@@ -129,21 +130,23 @@ int Game::checkWin()
 {
     if (this->p1.cardsLeft() == 0 and this->p2.cardsLeft() == 0)
     {
-        this->winner = 3;
-        this->mainLog += "Draw! \n";
-        return 1;
-    }
-    else if (this->p1.cardsLeft() == 0)
-    {
-        this->winner = 2;
-        this->mainLog += this->p2.getName() + " wins the game! \n";
-        return 1;
-    }
-    else if (this->p2.cardsLeft() == 0)
-    {
-        this->winner = 1;
-        this->mainLog += this->p1.getName() + " wins the game! \n";
-        return 1;
+       if(this->p1.cardesTaken() > this->p2.cardesTaken())
+       {
+           this->winner = 1;
+           this->mainLog += this->p1.getName() + " wins the game! \n";
+       }
+       else if(this->p1.cardesTaken() < this->p2.cardesTaken())
+       {
+           this->winner = 2;
+           this->mainLog += this->p2.getName() + " wins the game! \n";
+       }
+       else
+       {
+           this->p1.getCardsFromTaken();
+           this->p2.getCardsFromTaken();
+           this->mainLog += "Draw! \n";
+       }
+       return 1;
     }
     return 0;
 };

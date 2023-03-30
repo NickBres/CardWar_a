@@ -16,18 +16,18 @@ unsigned int Player::playCard()
         this->turnsPlayed++;
         return cardIndex;
     }
-    else if (!this->cardsTakenStack.empty()) // take cards from taken stack if player has no cards in his stack
-    {
-        while (!this->cardsTakenStack.empty())
-        {
-            this->cards.push_back(this->cardsTakenStack.back());
-            this->cardsTakenStack.pop_back();
-        }
-        return this->playCard();
-    }
     cout << "Player " << this->name << " has no cards left" << endl;
     return 53; // return 53 if player has no cards left. 53 is an invalid index for the deck
 };
+
+void Player::getCardsFromTaken()
+{
+    while (!this->cardsTakenStack.empty())
+    {
+        this->cards.push_back(this->cardsTakenStack.back());
+        this->cardsTakenStack.pop_back();
+    }
+}
 
 void Player::addCard(unsigned int cardIndex)
 {
@@ -57,14 +57,13 @@ string Player::getStats()
     }
     string winRate = to_string(int((float)this->turnsWon / (float)this->turnsPlayed * 100)) + "%";
     string drawRate = to_string(int((float)this->turnsDraw / (float)this->turnsPlayed * 100)) + "%";
-    return "Player " + this->name + " has played " + to_string(this->turnsPlayed) + " turns. Win rate: " 
-    + winRate + ". Draw rate: " + drawRate + ". Draw count: " + to_string(this->turnsDraw) +
-    ". Cards won: " + to_string(this->cardsTakenStack.size()) + ". Cards left: " + to_string(this->cardsLeft()) + ".";
+    return "Player " + this->name + " has played " + to_string(this->turnsPlayed) + " turns. Win rate: " + winRate + ". Draw rate: " + drawRate + ". Draw count: " + to_string(this->turnsDraw) +
+           ". Cards won: " + to_string(this->cardsTakenStack.size()) + ". Cards left: " + to_string(this->cardsLeft()) + ".";
 };
 
 int Player::cardsLeft()
 {
-    return this->cards.size() + this->cardsTakenStack.size();
+    return this->cards.size();
 };
 
 string Player::getName()

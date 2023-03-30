@@ -55,5 +55,7 @@ namespace ariel
         void win();
 
         void draw();
+
+        void getCardsFromTaken();
     };
 };
