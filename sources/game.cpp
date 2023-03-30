@@ -32,82 +32,93 @@ void Game::fillCards()
     }
 };
 
-void Game::swapCards(int i, int j)
+void Game::shuffleCards()
 {
-    Card temp = this->deck[i];
-    this->deck[i] = this->deck[j];
-    this->deck[j] = temp;
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(this->deck, this->deck + 52, g);
 };
 
 void Game::splitCards()
 {
-    for (int i = 0; i < 52; i++)
+    for (unsigned int i = 0; i < 52; i++)
     {
         if (i % 2 == 0)
         {
-            this->p1.addCard(this->deck[i]);
+            this->p1.addCard(i);
         }
         else
         {
-            this->p2.addCard(this->deck[i]);
+            this->p2.addCard(i);
         }
     }
 };
 
 void Game::playTurn()
 {
-    int i = 0;
-    string log = "";
+    string log = "";                                     // log of the turn
+    vector<unsigned int> cards = vector<unsigned int>(); // to store the cards that were drawn
+
+    unsigned int p1Card = this->p1.playCard();
+    unsigned int p2Card = this->p2.playCard();
+    if (this->checkWin())
+        return; // check if there is a winner already
+
     this->p1.turnsPlayed++;
-    this->deck[i++] = this->p1.playCard();
-    log += this->p1.name + " plays " + this->deck[i - 1].toString() + " | ";
     this->p2.turnsPlayed++;
-    this->deck[i++] = this->p2.playCard();
-    log += this->p2.name + " plays " + this->deck[i - 1].toString() + " > ";
-    int result = this->deck[i - 2].compare(this->deck[i - 1]);
-    while (!result and i < 52)
+    cards.push_back(p1Card);
+    cards.push_back(p2Card);
+    log += this->p1.name + " plays " + this->deck[p1Card].toString() + " | " + this->p2.name + " plays " + this->deck[p2Card].toString();
+
+    int compare = this->deck[p1Card].compare(this->deck[p2Card]);
+    while (!compare)
     {
-        log += "Draw! \n";
-        this->p1.turnsDraw++;
-        this->p2.turnsDraw++;
+        p1.turnsDraw++;
+        p2.turnsDraw++;
+        log += " > Draw \n";
+
+        p1Card = this->p1.playCard();
+
+        p2Card = this->p2.playCard();
+        if (this->checkWin())
+        { // check if there is a winner already
+            this->lastTurn = log;
+            this->mainLog += log;
+            return;
+        }
         this->p1.turnsPlayed++;
-        this->deck[i++] = this->p1.playCard();
-        this->deck[i++] = this->p2.playCard();
-        log += this->p1.name + " plays " + this->deck[i - 2].toString() + " | ";
-        log += this->p2.name + " plays " + this->deck[i - 1].toString() + " | ";
         this->p2.turnsPlayed++;
-        this->deck[i++] = this->p1.playCard();
-        this->deck[i++] = this->p2.playCard();
-        log += this->p1.name + " plays " + this->deck[i - 2].toString() + " | ";
-        log += this->p2.name + " plays " + this->deck[i - 1].toString() + " > ";
-        result = this->deck[i - 2].compare(this->deck[i - 1]);
+        log += this->p1.name + " plays " + this->deck[p1Card].toString() + " | " + this->p2.name + " plays " + this->deck[p2Card].toString();
+        cards.push_back(p1Card);
+        cards.push_back(p2Card);
+        compare = this->deck[p1Card].compare(this->deck[p2Card]);
     }
-    if (result > 0)
-    { // player 1 wins
-        log += this->p1.name + " wins the turn! \n";
-        this->p1.turnsWon++;
-        for (int j = 0; j < i; j++)
-        { // take all cards
-            this->p1.takeCard(this->deck[j]);
+    if (compare > 0)
+    {
+        log += " >>> " + this->p1.name + " wins the round! \n";
+        p1.turnsWon++;
+        while (cards.empty() == false)
+        {
+            this->p1.takeCard(cards.back());
+            cards.pop_back();
         }
     }
-    else if (result < 0)
-    { // player 2 wins
-        log += this->p2.name + " wins the turn! \n";
-        this->p2.turnsWon++;
-        for (int j = 0; j < i; j++)
-        { // take all cards
-            this->p2.takeCard(this->deck[j]);
+    else if (compare < 0)
+    {
+        log += " >>> " + this->p2.name + " wins the round! \n";
+        p2.turnsWon++;
+        while (cards.empty() == false)
+        {
+            this->p2.takeCard(cards.back());
+            cards.pop_back();
         }
     }
     else
-    { // draw
-        cout << "Draw" << endl;
-        winner = 3;
+    {
+        log += " >>> Draw! \n";
     }
     this->lastTurn = log;
     this->mainLog += log;
-    this->checkWin();
 };
 
 void Game::printLastTurn()
@@ -120,22 +131,27 @@ void Game::printLog()
     cout << this->mainLog << endl;
 };
 
-void Game::checkWin()
+int Game::checkWin()
 {
-    if (winner == 3)
+    if (this->p1.cardsLeft() == 0 and this->p2.cardsLeft() == 0)
     {
+        this->winner = 3;
         this->mainLog += "Draw! \n";
+        return 1;
     }
     else if (this->p1.cardsLeft() == 0)
     {
-        winner = 2;
+        this->winner = 2;
         this->mainLog += this->p2.name + " wins the game! \n";
+        return 1;
     }
-    else if (p2.cardsLeft() == 0)
+    else if (this->p2.cardsLeft() == 0)
     {
-        winner = 1;
+        this->winner = 1;
         this->mainLog += this->p1.name + " wins the game! \n";
+        return 1;
     }
+    return 0;
 };
 
 void Game::printWiner()
@@ -150,7 +166,6 @@ void Game::printWiner()
         {
             cout << this->p2.name << " wins the game!" << endl;
         }
-        
     }
     else if (this->winner == 3)
     {

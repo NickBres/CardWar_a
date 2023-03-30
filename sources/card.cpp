@@ -20,7 +20,7 @@ string Card::toString() {
     return to_string(this->rank) + " of " + this->suit;
 };
 
-int Card::compare(Card other) { // returns positive if this card is bigger, negative if other is bigger, 0 if equal
+int Card::compare(Card& other) { // returns positive if this card is bigger, negative if other is bigger, 0 if equal
     if (this->rank == 14 and other.rank == 2) {
         return -1;
     } else if (this->rank == 2 and other.rank == 14) {

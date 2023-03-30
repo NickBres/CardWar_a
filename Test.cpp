@@ -54,44 +54,39 @@ TEST_CASE("Player init") {
 
 TEST_CASE("Player main deck manipulations"){
     Player p("Capybarak");
-    Card card1(2, "Hearts");
-    p.addCard(card1); // add card to main deck
+    p.addCard(1); // add card to main deck
     CHECK(p.cards.size() == 1);  // check if card was added
     CHECK(p.cardsLeft() == 1);
-    card1 = p.playCard();  // play card (get card from main deck)
+    p.playCard();  // play card (get card from main deck)
     CHECK(p.cards.size() == 0); // check if card was removed
     CHECK(p.cardsLeft() == 0);
-    CHECK(card1.getRank() == 2); // check if card is the same
-    CHECK(card1.getSuit() == "Hearts");
 }
 
 TEST_CASE("Player cards taken manipulations"){
     Player p("Capybarak");
-    Card card1(2, "Hearts");
-    p.takeCard(card1); // add card to cards taken
+    p.takeCard(1); // add card to cards taken
     CHECK(p.cardsTakenStack.size() == 1);  // check if card was added
     CHECK(p.cardesTaken() == 1);
     CHECK(p.cardsLeft() == 1);
-    card1 = p.playCard();  // play card (get card from cards taken because main deck is empty)
+    p.playCard();  // play card (get card from cards taken because main deck is empty)
     CHECK(p.cardsTakenStack.size() == 0); // check if card was removed
     CHECK(p.cardesTaken() == 1);
     CHECK(p.cardsLeft() == 0);
-    CHECK(card1.getRank() == 2); // check if card is the same
-    CHECK(card1.getSuit() == "Hearts");
 }
 
 TEST_CASE("Player stats"){
     Player p("Capybarak");
     CHECK(p.getStats() == "Player Capybarak has not played any turns yet");
     p.turnsPlayed++;
-    CHECK(p.getStats() == "Player Capybarak has played 1 turns.Win rate: 0%. Draw rate: 0%. Cards taken: 0. Cards left: 0.");
+    CHECK(p.getStats() == "Player Capybarak has played 1 turns. Win rate: 0%. Draw rate: 0%. Cards taken: 0. Cards left: 0.");
     p.turnsWon++;
-    CHECK(p.getStats() == "Player Capybarak has played 1 turns.Win rate: 100%. Draw rate: 0%. Cards taken: 0. Cards left: 0.");
+    CHECK(p.getStats() == "Player Capybarak has played 1 turns. Win rate: 100%. Draw rate: 0%. Cards taken: 0. Cards left: 0.");
     p.turnsPlayed++;
     p.turnsDraw++;
-    CHECK(p.getStats() == "Player Capybarak has played 2 turns.Win rate: 50%. Draw rate: 50%. Cards taken: 0. Cards left: 0.");
+    CHECK(p.getStats() == "Player Capybarak has played 2 turns. Win rate: 50%. Draw rate: 50%. Cards taken: 0. Cards left: 0.");
     p.cardsTakenCount++;
-    CHECK(p.getStats() == "Player Capybarak has played 2 turns.Win rate: 50%. Draw rate: 50%. Cards taken: 1. Cards left: 1.");
+    p.takeCard(1);
+    CHECK(p.getStats() == "Player Capybarak has played 2 turns. Win rate: 50%. Draw rate: 50%. Cards taken: 1. Cards left: 1.");
 }
 
 TEST_CASE("Gameplay"){

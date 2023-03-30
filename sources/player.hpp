@@ -6,7 +6,7 @@
 
 #include <string>
 #include <iostream>
-#include <stack>
+#include <vector>
 #include "card.hpp"
 
 using namespace std;
@@ -16,44 +16,31 @@ namespace ariel
     {
     public:
         string name;
-        stack<Card> cards;
-        stack<Card> cardsTakenStack;
+        vector<unsigned int> cards;        // cards in hand by index
+        vector<unsigned int> cardsTakenStack;  // cards taken by index
         int turnsPlayed;
         int turnsWon;
         int turnsDraw;
-        int cardsTakenCount;
 
-        Player(){
-            this->setDefault();
-        };
-
-        Player(string name)
+        Player(string name = "")
         {
             this->name = name;
             this->turnsPlayed = 0;
             this->turnsWon = 0;
             this->turnsDraw = 0;
-            this->cardsTakenCount = 0;
-            this->cards = stack<Card>();
-            this->cardsTakenStack = stack<Card>();
+            this->cards = vector<unsigned int>();
+            this->cardsTakenStack = vector<unsigned int>();
+        };
+        ~Player(){
+            this->cards.clear();
+            this->cardsTakenStack.clear();
         };
 
-        void setDefault()
-        {
-            this->name = "";
-            this->turnsPlayed = 0;
-            this->turnsWon = 0;
-            this->turnsDraw = 0;
-            this->cardsTakenCount = 0;
-            this->cards = stack<Card>();
-            this->cardsTakenStack = stack<Card>();
-        };
+        unsigned int playCard(); // returns the index of the card played
 
-        Card playCard();
+        void addCard(unsigned int  cardIndex); 
 
-        void addCard(Card card);
-
-        void takeCard(Card card);
+        void takeCard(unsigned int cardIndex);
 
         int stacksize();
 

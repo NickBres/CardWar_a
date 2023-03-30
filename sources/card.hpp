@@ -16,17 +16,14 @@ namespace ariel
         int rank;    // (2 - 10, Jack, Queen, King, Ace)
         string suit; // (Hearts, Spades, Diamonds, Clubs)
     public:
-        Card()
-        {
-            this->setDefault();
-        };
-        Card(int rank, string suit)
+        Card(int rank = 0, string suit = "")
         {
             this->rank = rank;
             this->suit = suit;
         };
+        ~Card(){};
         string toString();
-        int compare(Card other);
+        int compare(Card &other);
         int getRank()
         {
             return this->rank;
@@ -34,11 +31,6 @@ namespace ariel
         string getSuit()
         {
             return this->suit;
-        };
-        void setDefault()
-        {
-            this->rank = 0;
-            this->suit = "";
         };
         void setRank(int rank)
         {

@@ -6,43 +6,36 @@
 using namespace std;
 using namespace ariel;
 
-Card Player::playCard()
+unsigned int Player::playCard()
 {
-    Card card;
+    unsigned int cardIndex;
     if (!this->cards.empty())
     { // first check if player has cards in his stack
-        card = this->cards.top();
-        this->cards.pop();
-        return card;
+        cardIndex = this->cards.back();
+        this->cards.pop_back();
+        return cardIndex;
     }
-    else if (!this->cardsTakenStack.empty())
-    { // if not, check if he has cards in his taken stack
+    else if (!this->cardsTakenStack.empty()) // take cards from taken stack if player has no cards in his stack
+    {
         while (!this->cardsTakenStack.empty())
         {
-            this->cards.push(this->cardsTakenStack.top());
-            this->cardsTakenStack.pop();
+            this->cards.push_back(this->cardsTakenStack.back());
+            this->cardsTakenStack.pop_back();
         }
-        card = this->cards.top();
-        this->cards.pop();
-        return card;
+        return this->playCard();
     }
-    else
-    {
-        cout << "Player " << this->name << " has no cards left" << endl;
-        card = Card();
-        return card;
-    }
+    cout << "Player " << this->name << " has no cards left" << endl;
+    return 53; // return 53 if player has no cards left. 53 is an invalid index for the deck
 };
 
-void Player::addCard(Card card)
+void Player::addCard(unsigned int cardIndex)
 {
-    this->cards.push(card);
+    this->cards.push_back(cardIndex);
 };
 
-void Player::takeCard(Card card)
+void Player::takeCard(unsigned int cardIndex)
 {
-    this->cardsTakenStack.push(card);
-    this->cardsTakenCount++;
+    this->cardsTakenStack.push_back(cardIndex);
 };
 
 int Player::stacksize()
@@ -52,7 +45,7 @@ int Player::stacksize()
 
 int Player::cardesTaken()
 {
-    return this->cardsTakenCount;
+    return this->cardsTakenStack.size();
 };
 
 string Player::getStats()
@@ -61,9 +54,11 @@ string Player::getStats()
     {
         return "Player " + this->name + " has not played any turns yet";
     }
-    string winRate = to_string((int)(this->turnsWon / this->turnsPlayed * 100)) + "%";
-    string drawRate = to_string((float)this->turnsDraw / (float)this->turnsPlayed * 100) + "%";
-    return "Player " + this->name + " has played " + to_string(this->turnsPlayed) + " turns. Win rate: " + winRate + ". Draw rate: " + drawRate + ". Cards taken: " + to_string(this->cardsTakenCount) + ". Cards left: " + to_string(this->cardsLeft()) + ".";
+    string winRate = to_string(int((float)this->turnsWon / (float)this->turnsPlayed * 100)) + "%";
+    string drawRate = to_string(int((float)this->turnsDraw / (float)this->turnsPlayed * 100)) + "%";
+    return "Player " + this->name + " has played " + to_string(this->turnsPlayed) + " turns. Win rate: " 
+    + winRate + ". Draw rate: " + drawRate + " Draw count: " + to_string(this->turnsDraw) +
+    ". Cards won: " + to_string(this->cardsTakenStack.size()) + ". Cards left: " + to_string(this->cardsLeft()) + ".";
 };
 
 int Player::cardsLeft()
