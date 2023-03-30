@@ -16,11 +16,7 @@ namespace ariel
         int rank;    // (2 - 10, Jack, Queen, King, Ace)
         string suit; // (Hearts, Spades, Diamonds, Clubs)
     public:
-        Card(int rank = 0, string suit = "")
-        {
-            this->rank = rank;
-            this->suit = suit;
-        };
+        Card(int rank = 0, string suit = "") : rank(rank), suit(suit){};
         ~Card(){};
         string toString();
         int compare(Card &other);

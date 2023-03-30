@@ -9,6 +9,7 @@
 #include <random>
 #include <vector>
 
+
 #include "card.hpp"
 #include "player.hpp"
 
@@ -17,18 +18,13 @@ namespace ariel
     class Game
     {
         Card deck[52];
-        Player p1,p2;
+        Player &p1,&p2;
         string lastTurn;
         string mainLog;
         int winner;
 
     public:
-        Game(Player &p1, Player &p2): p1(p1), p2(p2){
-        lastTurn = "";
-        mainLog = "";
-        winner = -1;
-        this->p1 = p1;
-        this->p2 = p2;
+        Game(Player &p1, Player &p2): p1(p1), p2(p2),lastTurn(""),mainLog(""),winner(-1){
         this->fillCards();
         this->shuffleCards();
         this->splitCards();
@@ -42,7 +38,7 @@ namespace ariel
         void printLastTurn();  
         void printLog();  // print the log of the game
         int checkWin();  // check if there is a winner
-        void printWiner();
+        void printWiner(); 
         void printStats(); // print the stats of the players
         void playAll(); // play the game until the end
         

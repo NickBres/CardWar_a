@@ -2,7 +2,8 @@
 // Created by Nikita Breslavsky on 24/03/2023.
 //
 #include "doctest.h"
-#include <stdexcept>
+#include <unistd.h>
+
 
 #include "sources/player.hpp"
 #include "sources/game.hpp"
@@ -53,10 +54,10 @@ TEST_CASE("Player main deck manipulations"){
 TEST_CASE("Player cards taken manipulations"){
     Player p("Capybarak");
     p.takeCard(1); // add card to cards taken
-    CHECK(p.cardesTaken() == 1);
-    CHECK(p.cardsLeft() == 1);
-    p.playCard();  // play card (get card from cards taken because main deck is empty)
-    CHECK(p.cardesTaken() == 0);
+    CHECK(p.cardesTaken() == 1); 
+    CHECK(p.cardsLeft() == 0); // cards taken are not in main deck
+    p.playCard(); // nothing happens because there are no cards in main deck
+    CHECK(p.cardesTaken() == 1); 
     CHECK(p.cardsLeft() == 0);
 }
 
@@ -73,7 +74,7 @@ TEST_CASE("Player stats"){
     p.draw();
     CHECK(p.getStats() == "Player Capybarak has played 2 turns. Win rate: 50%. Draw rate: 50%. Draw count: 1. Cards won: 0. Cards left: 0.");
     p.takeCard(1);
-    CHECK(p.getStats() == "Player Capybarak has played 2 turns. Win rate: 50%. Draw rate: 50%. Draw count: 1. Cards won: 1. Cards left: 1.");
+    CHECK(p.getStats() == "Player Capybarak has played 2 turns. Win rate: 50%. Draw rate: 50%. Draw count: 1. Cards won: 1. Cards left: 0.");
 }
 
 TEST_CASE("Gameplay"){

@@ -56,7 +56,7 @@ void Game::splitCards()
 
 void Game::playTurn()
 {
-    if (this->checkWin()) // do not play if there is a winner
+    if (this->winner != -1) // do not play if there is a winner
     {
         return;
     }
@@ -123,7 +123,11 @@ void Game::printLastTurn()
 
 void Game::printLog()
 {
-    cout << this->mainLog << endl;
+    cout << "_________________________________________________________________________" << endl;
+    cout << "                               GAME LOG" << endl;
+    cout << "_________________________________________________________________________\n" << endl;
+    cout << this->mainLog;
+    cout << "_________________________________________________________________________" << endl;
 };
 
 int Game::checkWin()
@@ -133,12 +137,12 @@ int Game::checkWin()
        if(this->p1.cardesTaken() > this->p2.cardesTaken())
        {
            this->winner = 1;
-           this->mainLog += this->p1.getName() + " wins the game! \n";
+           this->mainLog += "\n" +  this->p1.getName() + " wins the game! \n";
        }
        else if(this->p1.cardesTaken() < this->p2.cardesTaken())
        {
            this->winner = 2;
-           this->mainLog += this->p2.getName() + " wins the game! \n";
+           this->mainLog += "\n" +  this->p2.getName() + " wins the game! \n";
        }
        else
        {
