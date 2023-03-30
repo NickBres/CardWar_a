@@ -14,7 +14,6 @@ namespace ariel
 {
     class Player
     {
-    public:
         string name;
         vector<unsigned int> cards;        // cards in hand by index
         vector<unsigned int> cardsTakenStack;  // cards taken by index
@@ -22,6 +21,7 @@ namespace ariel
         int turnsWon;
         int turnsDraw;
 
+    public:
         Player(string name = "")
         {
             this->name = name;
@@ -48,6 +48,12 @@ namespace ariel
 
         string getStats();
 
+        string getName();
+
         int cardsLeft();
+
+        void win();
+
+        void draw();
     };
 };

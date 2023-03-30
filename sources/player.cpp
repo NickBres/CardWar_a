@@ -13,6 +13,7 @@ unsigned int Player::playCard()
     { // first check if player has cards in his stack
         cardIndex = this->cards.back();
         this->cards.pop_back();
+        this->turnsPlayed++;
         return cardIndex;
     }
     else if (!this->cardsTakenStack.empty()) // take cards from taken stack if player has no cards in his stack
@@ -57,11 +58,26 @@ string Player::getStats()
     string winRate = to_string(int((float)this->turnsWon / (float)this->turnsPlayed * 100)) + "%";
     string drawRate = to_string(int((float)this->turnsDraw / (float)this->turnsPlayed * 100)) + "%";
     return "Player " + this->name + " has played " + to_string(this->turnsPlayed) + " turns. Win rate: " 
-    + winRate + ". Draw rate: " + drawRate + " Draw count: " + to_string(this->turnsDraw) +
+    + winRate + ". Draw rate: " + drawRate + ". Draw count: " + to_string(this->turnsDraw) +
     ". Cards won: " + to_string(this->cardsTakenStack.size()) + ". Cards left: " + to_string(this->cardsLeft()) + ".";
 };
 
 int Player::cardsLeft()
 {
     return this->cards.size() + this->cardsTakenStack.size();
+};
+
+string Player::getName()
+{
+    return this->name;
+};
+
+void Player::win()
+{
+    this->turnsWon++;
+};
+
+void Player::draw()
+{
+    this->turnsDraw++;
 };
