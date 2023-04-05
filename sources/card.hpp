@@ -13,14 +13,13 @@ namespace ariel
 
     class Card
     {
-        int rank;    // (2 - 10, Jack, Queen, King, Ace)
+        unsigned int rank;    // (2 - 10, Jack, Queen, King, Ace)
         string suit; // (Hearts, Spades, Diamonds, Clubs)
     public:
-        Card(int rank = 0, string suit = "") : rank(rank), suit(suit){};
-        ~Card(){};
+        Card(unsigned int rank = 0, string&& suit = "No suit") : rank(rank), suit(move(suit)){};
         string toString();
         int compare(Card &other);
-        int getRank()
+        unsigned int getRank() const
         {
             return this->rank;
         };
@@ -28,13 +27,13 @@ namespace ariel
         {
             return this->suit;
         };
-        void setRank(int rank)
+        void setRank(unsigned int rank)
         {
             this->rank = rank;
         };
-        void setSuit(string suit)
+        void setSuit(string&& suit)
         {
-            this->suit = suit;
+            this->suit = move(suit);
         };
     };
 };

@@ -8,29 +8,32 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <array>
 
 
 #include "card.hpp"
 #include "player.hpp"
 
+
+
 namespace ariel
 {
+    const int NUM_CARDS = 52;
+
     class Game
     {
-        Card deck[52];
+        array<Card, NUM_CARDS> deck;   
         Player &p1,&p2;
         string lastTurn;
         string mainLog;
         int winner;
 
     public:
-        Game(Player &p1, Player &p2): p1(p1), p2(p2),lastTurn(""),mainLog(""),winner(-1){
+        Game(Player &player1, Player &player2): p1(player1), p2(player2),winner(-1){
         this->fillCards();
         this->shuffleCards();
         this->splitCards();
     };
-        ~Game(){};
-
         void fillCards();  // fill the array of cards#include <iostream>
         void shuffleCards(); // shuffle the array of cards
         void splitCards(); // split cards between two players
@@ -41,6 +44,7 @@ namespace ariel
         void printWiner(); 
         void printStats(); // print the stats of the players
         void playAll(); // play the game until the end
+        void takeCards(Player &player,vector<unsigned int> cards); // take the cards that were played in turn
         
     };
 };

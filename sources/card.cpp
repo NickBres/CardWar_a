@@ -26,6 +26,6 @@ int Card::compare(Card& other) { // returns positive if this card is bigger, neg
     } else if (this->rank == 2 and other.rank == 14) {
         return 1;
     }
-    return this->rank - other.rank;
+    return (int)this->rank - (int)other.rank;
 };
 

@@ -22,12 +22,7 @@ namespace ariel
         int turnsDraw; // count of turns draw
 
     public:
-        Player(string name = ""): name(name), turnsPlayed(0), turnsWon(0), turnsDraw(0), cards(vector<unsigned int>()), cardsTakenStack(vector<unsigned int>())
-        {};
-        ~Player(){
-            this->cards.clear();
-            this->cardsTakenStack.clear();
-        };
+        Player(string&& name = "No name"): name(move(name)), turnsPlayed(0), turnsWon(0), turnsDraw(0){};
 
         unsigned int playCard(); // returns the index of the card played
 
