@@ -201,7 +201,6 @@ int Game::checkWin()
 
 void Game::printWiner()
 {
-
     if (this->checkWin())
     {
         if (this->winner == 1)
@@ -213,8 +212,10 @@ void Game::printWiner()
             cout << this->p2.getName() << " wins the game!" << endl;
         }else
         {
-            throw runtime_error("Draw!");
+            cout << "Draw!" << endl;
         }
+    }else{
+        cout << "Game is not over!" << endl;
     }
 };
 
