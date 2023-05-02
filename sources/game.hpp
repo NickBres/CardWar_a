@@ -29,11 +29,7 @@ namespace ariel
         int winner;
 
     public:
-        Game(Player &player1, Player &player2): p1(player1), p2(player2),winner(-1){
-        this->fillCards();
-        this->shuffleCards();
-        this->splitCards();
-    };
+        Game(Player &player1, Player &player2); // constructor
         void fillCards();  // fill the array of cards#include <iostream>
         void shuffleCards(); // shuffle the array of cards
         void splitCards(); // split cards between two players

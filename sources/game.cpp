@@ -7,6 +7,13 @@
 using namespace std;
 using namespace ariel;
 
+Game::Game(Player &player1, Player &player2) : p1(player1), p2(player2), winner(-1)
+{
+    this->fillCards();
+    this->shuffleCards();
+    this->splitCards();
+};
+
 void Game::fillCards()
 {
     string name = "Hearts";
@@ -56,7 +63,8 @@ void Game::splitCards()
 
 void Game::playTurn()
 {
-    if (&this->p1 == &this->p2){
+    if (&this->p1 == &this->p2)
+    {
         throw runtime_error("Cannot play with the same player!");
         return;
     }
@@ -73,8 +81,16 @@ void Game::playTurn()
     cards.push_back(p1Card);
     cards.push_back(p2Card);
     log += this->p1.getName() + " plays " + this->deck[p1Card].toString() + " | " + this->p2.getName() + " plays " + this->deck[p2Card].toString();
-    if (this->checkWin()) // chech if cards left 
-        { 
+
+    int compare = this->deck[p1Card].compare(this->deck[p2Card]);
+    while (!compare)
+    {
+        p1.draw();
+        p2.draw();
+        log += " > Draw > ";
+
+        if (this->checkWin()) // chech if cards left
+        {
             if (this->winner == 1)
             {
                 log += this->p1.getName() + " wins the game! \n";
@@ -92,19 +108,13 @@ void Game::playTurn()
             this->mainLog += log + '\n';
             return;
         }
-    int compare = this->deck[p1Card].compare(this->deck[p2Card]);
-    while (!compare)
-    {
-        p1.draw();
-        p2.draw();
-        log += " > Draw > ";
 
         p1Card = this->p1.playCard();
         p2Card = this->p2.playCard();
         cards.push_back(p1Card);
         cards.push_back(p2Card);
-        if (this->checkWin()) // chech if cards left 
-        { 
+        if (this->checkWin()) // chech if cards left
+        {
             if (this->winner == 1)
             {
                 log += this->p1.getName() + " wins the game! \n";
@@ -210,11 +220,14 @@ void Game::printWiner()
         else if (this->winner == 2)
         {
             cout << this->p2.getName() << " wins the game!" << endl;
-        }else
+        }
+        else
         {
             cout << "Draw!" << endl;
         }
-    }else{
+    }
+    else
+    {
         cout << "Game is not over!" << endl;
     }
 };
